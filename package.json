@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node -r dotenv/config --experimental-modules app.js",
+    "start": "nodemon -r dotenv/config --experimental-modules src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,6 +16,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.9.20",
+    "swagger-ui-express": "^4.1.4",
     "winston": "^3.3.3",
     "winston-mongodb": "^5.0.1"
   },
