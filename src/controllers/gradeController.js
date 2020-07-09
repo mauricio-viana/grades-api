@@ -10,7 +10,7 @@ const create = async (req, res) => {
   try {
     const data = await grade.save(grade);
 
-    res.json(data);
+    res.status(201).json(data);
 
     logger.info(`POST /grade - ${JSON.stringify()}`);
   } catch (error) {
@@ -31,7 +31,7 @@ const findAll = async (req, res) => {
   try {
     const allGrades = await Grade.find(condition);
 
-    res.json(allGrades);
+    res.status(200).json(allGrades);
     logger.info(`GET /grade`);
   } catch (error) {
     res
@@ -47,11 +47,11 @@ const findOne = async (req, res) => {
   try {
     const grade = await Grade.findById(id);
 
-    res.json(grade);
+    res.status(200).json(grade);
 
     logger.info(`GET /grade - ${id}`);
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao buscar o Grade id: ' + id });
+    res.status(500).json({ message: 'Error fetching the grade id: ' + id });
     logger.error(`GET /grade - ${JSON.stringify(error.message)}`);
   }
 };
@@ -59,7 +59,7 @@ const findOne = async (req, res) => {
 const update = async (req, res) => {
   if (!req.body) {
     return res.status(400).json({
-      message: 'Dados para atualizacao vazio',
+      message: 'Data for empty update',
     });
   }
 
@@ -68,11 +68,11 @@ const update = async (req, res) => {
   try {
     await Grade.findByIdAndUpdate({ _id: id }, req.body);
 
-    res.json({ message: 'Grade atualizado com sucesso' });
+    res.status(200).json({ message: 'The grade was updated successfully!' });
 
     logger.info(`PUT /grade - ${id} - ${JSON.stringify(req.body)}`);
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao atualizar a Grade id: ' + id });
+    res.status(500).json({ message: 'Error updating grade id: ' + id });
     logger.error(`PUT /grade - ${JSON.stringify(error.message)}`);
   }
 };
@@ -82,13 +82,13 @@ const remove = async (req, res) => {
 
   try {
     await Grade.deleteOne({ _id: id });
-    res.json({ message: 'Grade excluido com sucesso' });
+    res.status(200).json({ message: 'The grade was deleted successfully!' });
 
     logger.info(`DELETE /grade - ${id}`);
   } catch (error) {
     res
       .status(500)
-      .json({ message: 'Nao foi possivel deletar o Grade id: ' + id });
+      .json({ message: 'It was not possible to delete the grade id: ' + id });
     logger.error(`DELETE /grade - ${JSON.stringify(error.message)}`);
   }
 };
@@ -97,12 +97,10 @@ const removeAll = async (_, res) => {
   try {
     await Grade.deleteMany();
 
-    res.json({
-      message: `Grades excluidos`,
-    });
+    res.status(200).json({ message: 'Grades deleted' });
     logger.info(`DELETE /grade`);
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao excluir todos as Grades' });
+    res.status(500).json({ message: 'Error deleting all grades' });
     logger.error(`DELETE /grade - ${JSON.stringify(error.message)}`);
   }
 };

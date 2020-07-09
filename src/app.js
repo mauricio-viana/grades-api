@@ -1,7 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
 
+import { swaggerDocument } from './swaggerDocument.js';
 import { gradeRouter } from './routes/gradeRouter.js';
 import { logger } from './config/logger.js';
 import { db } from './models/index.js';
@@ -25,17 +27,13 @@ const app = express();
 //define o dominio de origem para consumo do servico
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(gradeRouter);
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(
   cors({
     origin: process.env.APP_URL,
   })
 );
-
-app.use(gradeRouter);
-
-app.get('/', (_, res) => {
-  res.send('API em execucao');
-});
 
 app.listen(process.env.PORT || 8081, () => {
   logger.info(`Servidor em execucao na porta ${process.env.PORT}`);
