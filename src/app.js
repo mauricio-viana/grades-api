@@ -25,15 +25,15 @@ import { db } from './models/index.js';
 const app = express();
 
 //define o dominio de origem para consumo do servico
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(gradeRouter);
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(
   cors({
     origin: process.env.APP_URL,
   })
 );
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(gradeRouter);
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(process.env.PORT || 8081, () => {
   logger.info(`Servidor em execucao na porta ${process.env.PORT}`);
